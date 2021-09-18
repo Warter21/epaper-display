@@ -1,0 +1,443 @@
+esphome:
+  name: epaper-display
+  platform: ESP8266
+  board: d1_mini
+  on_boot:
+    priority: -10
+    then:
+      - delay: 10s
+      - component.update: epaperdisplay
+
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+  fast_connect: true
+
+  ap:
+    ssid: "Epaper-Display Fallback Hotspot"
+    password: !secret ap_password
+
+captive_portal:
+
+# Enable logging
+logger:
+  baud_rate: 0
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: !secret ota_password
+
+font:
+
+  - file: 'fonts/Roboto-Regular.ttf'
+    id: header_font
+    size: 10
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z','å', 'ä', 'ö', '/','º','µ','³']
+
+
+  - file: 'fonts/Roboto-Regular.ttf'
+    id: main_sensor_unit
+    size: 16
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z','å', 'ä', 'ö', '/','º','µ','³']
+
+  - file: 'fonts/Roboto-Bold.ttf'
+    id: date_sensor_unit
+    size: 17
+       
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: sub_sensor_font
+    size: 42
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z','å', 'ä', 'ö', '/','º','µ','³']
+
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: mid_sensor_font
+    size: 35
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+       '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+       'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+       'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+       'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+       'u', 'v', 'w', 'x', 'y', 'z','å', 'ä', 'ö', '/','º','µ','³']
+  
+  - file: 'fonts/Roboto-Medium.ttf'
+    id: main_sensor_font
+    size: 62
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_wifi
+    size: 20
+    glyphs: [
+      '󰤫', # mdi-wifi-strength-alert-outline
+      '󰤟', # mdi-wifi-strength-1
+      '󰤢', # mdi-wifi-strength-2
+      '󰤥', # mdi-wifi-strength-3
+      '󰤨' # mdi-wifi-strength-4
+      ]
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_med
+    size: 33
+    glyphs: [
+      '󰀦', # mdi-alert
+      '󰊚', # mdi-gauge
+      '󰔏', # mdi-themometer
+      '󰖎', # mdi-water-percent
+      '󰖝', # mdi-weather-windy
+      ]
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_moon
+    size: 52
+    glyphs: [
+      '󰽡', # mdi-moon-first-quarter
+      '󰽢', # mdi-moon-full
+      '󰽣', # mdi-moon-last-quarter
+      '󰽤', # mdi-moon-new
+      '󰽥', # mdi-moon-waning-crescent
+      '󰽦', # mdi-moon-waning-gibbous
+      '󰽧', # mdi-moon-waxing-crescent
+      '󰽨' # mdi-moon-waxing-gibbous
+      ]
+
+  - file: 'fonts/materialdesignicons-webfont.ttf'
+    id:  mdi_big
+    size: 82
+    glyphs: [
+      '󰖙', # mdi-weather-sunny
+      '󰖔', # mdi-weather-night
+      '󰖐', # mdi-weather-cloudy
+      '󰖖', # mdi-weather-pouring
+      '󰙿', # mdi-weather-snowy-rainy
+      '󰼶', # mdi-weather-snowy-heavy
+      '󰖞', # mdi-weather-windy-variant
+      '󰖑', # mdi-weather-fog
+      '󰼱', # mdi-weather-night-partly-cloudy
+      '󰖕', # mdi-weather-partly-cloudy
+      '󰙾', # mdi-weather-lightning-rainy
+      '󰼯', # mdi-weather-cloudy-alert
+      '󰖓' # mdi-weather-lightning
+      ]
+
+time:
+  - platform: sntp
+    timezone: Europe/Budapest
+    id: current_time
+    on_time:
+      - seconds: 0
+        then:
+          - component.update: epaperdisplay
+
+sensor:
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_wind_bearing
+    id: wind_bearing
+
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_wind_speed
+    id: wind_speed
+
+  - platform: homeassistant
+    entity_id: sensor.living_room_temperature
+    id: temp_indoor
+  
+  - platform: homeassistant
+    entity_id: sensor.living_room_humidity
+    id: humid_indoor
+  
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_temperature
+    id: temp_outdoor
+  
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_humidity
+    id: humid_outdoor
+
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_pressure
+    id: press_outdoor
+
+  - platform: wifi_signal
+    name: "Epaper Display WiFi Signal"
+    id: wifisignal
+    update_interval: 60s
+
+  - platform: uptime
+    name: Epaper Uptime
+
+text_sensor:
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_condition
+    id: weather_cond
+
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_forecast_condition
+    id: weather_for_cond
+
+  - platform: homeassistant
+    entity_id: sensor.moon
+    id: moon
+
+spi:
+  clk_pin: 14
+  mosi_pin: 13  #DIN
+  
+display:
+  - platform: waveshare_epaper
+    id: epaperdisplay
+    cs_pin: 15
+    dc_pin: 12
+    update_interval: 600s
+    busy_pin: 16
+    reset_pin: 4
+    model: 4.20in
+    lambda: |-
+
+      int wind_danger_thres = 14;
+
+      float outdoor_temp = id(temp_outdoor).state;
+      int outdoor_humid = int(id(humid_outdoor).state);
+      float indoor_temp = id(temp_indoor).state;
+      int indoor_humid = int(id(humid_indoor).state);
+      float outdoor_press = id(press_outdoor).state;
+      float speed_wind = id(wind_speed).state;
+      float bearing_wind = id(wind_bearing).state;      
+      
+      // TIME
+      it.printf(8, 12, id(header_font), TextAlign::BASELINE_LEFT, "TIME");
+      it.strftime(10, 61, id(main_sensor_font), TextAlign::BASELINE_LEFT, "%H:%M", id(current_time).now());
+      it.strftime(231, 35, id(date_sensor_unit), TextAlign::BASELINE_CENTER, "%A", id(current_time).now());
+      it.strftime(233, 55, id(date_sensor_unit), TextAlign::BASELINE_CENTER, "%Y. %b. %d.", id(current_time).now());
+
+      // Horizontal line
+      it.line(305, 2, 305, 70);
+
+      // Moon
+      it.printf(310, 12, id(header_font), TextAlign::BASELINE_LEFT, "MOON");
+      if(id(moon).state == "first_quarter") {
+        it.print(328, 14, id(mdi_moon), "󰽡");}
+      if(id(moon).state == "full") {
+        it.print(328, 14, id(mdi_moon), "󰽢");}
+      if(id(moon).state == "last_quarter") {
+        it.print(328, 14, id(mdi_moon), "󰽣");}
+      if(id(moon).state == "new") {
+        it.print(328, 14, id(mdi_moon), "󰽤");}
+      if(id(moon).state == "waning_crescent") {
+        it.print(328, 14, id(mdi_moon), "󰽥");}
+      if(id(moon).state == "waning_gibbous") {
+        it.print(328, 14, id(mdi_moon), "󰽦");}
+      if(id(moon).state == "waxing_crescent") {
+        it.print(328, 14, id(mdi_moon), "󰽧");}
+      if(id(moon).state == "waxing_gibbous") {
+        it.print(328, 14, id(mdi_moon), "󰽨");}
+
+      // Forecast
+      it.line(7, 70, 393, 70);
+      it.printf(8, 85, id(header_font), TextAlign::BASELINE_LEFT, "CURRENT");
+
+      if(id(weather_cond).state == "clear-night") {
+        it.print(7, 95, id(mdi_big), "󰖔");}
+      if(id(weather_cond).state == "clear-day") {
+        it.print(7, 95, id(mdi_big), "󰖙");}
+      if(id(weather_cond).state == "sunny") {
+        it.print(7, 95, id(mdi_big), "󰖙");}
+      if(id(weather_cond).state == "partlycloudy") {
+        it.print(7, 95, id(mdi_big), "󰖕");}
+      if(id(weather_cond).state == "nightpartlycloudy") {
+        it.print(7, 95, id(mdi_big), "󰼱");}
+      if(id(weather_cond).state == "rainy") {
+        it.print(7, 95, id(mdi_big), "󰖖");}
+      if(id(weather_cond).state == "pouring") {
+        it.print(7, 95, id(mdi_big), "󰖖");}
+      if(id(weather_cond).state == "snowy-rainy") {
+        it.print(7, 95, id(mdi_big), "󰙿");}
+      if(id(weather_cond).state == "snowy") {
+        it.print(7, 95, id(mdi_big), "󰼶");}
+      if(id(weather_cond).state == "fog") {
+        it.print(7, 95, id(mdi_big), "󰖑");}
+      if(id(weather_cond).state == "windy") {
+        it.print(7, 95, id(mdi_big), "󰖞");}
+      if(id(weather_cond).state == "cloudy") {
+        it.print(7, 95, id(mdi_big), "󰖐");}
+      if(id(weather_cond).state == "lightning") {
+        it.print(7, 95, id(mdi_big), "󰖓");}
+      if(id(weather_cond).state == "lightning-rainy") {
+        it.print(7, 95, id(mdi_big), "󰙾");}
+      if(id(weather_cond).state == "exceptional") {
+        it.print(7, 95, id(mdi_big), "󰼯");}
+
+      // Forecast
+      it.printf(8, 197, id(header_font), TextAlign::BASELINE_LEFT, "FORECAST");
+
+      if(id(weather_for_cond).state == "clear-night") {
+        it.print(7, 207, id(mdi_big), "󰖔");}
+      if(id(weather_for_cond).state == "clear-day") {
+        it.print(7, 207, id(mdi_big), "󰖙");}
+      if(id(weather_for_cond).state == "sunny") {
+        it.print(7, 207, id(mdi_big), "󰖙");}
+      if(id(weather_for_cond).state == "partlycloudy") {
+        it.print(7, 207, id(mdi_big), "󰖕");}
+      if(id(weather_for_cond).state == "nightpartlycloudy") {
+        it.print(7, 207, id(mdi_big), "󰼱");}
+      if(id(weather_for_cond).state == "rainy") {
+        it.print(7, 207, id(mdi_big), "󰖖");}
+      if(id(weather_for_cond).state == "pouring") {
+        it.print(7, 207, id(mdi_big), "󰖖");}
+      if(id(weather_for_cond).state == "snowy-rainy") {
+        it.print(7, 207, id(mdi_big), "󰙿");}
+      if(id(weather_for_cond).state == "snowy") {
+        it.print(7, 207, id(mdi_big), "󰼶");}
+      if(id(weather_for_cond).state == "fog") {
+        it.print(7, 207, id(mdi_big), "󰖑");}
+      if(id(weather_for_cond).state == "windy") {
+        it.print(7, 207, id(mdi_big), "󰖞");}
+      if(id(weather_for_cond).state == "cloudy") {
+        it.print(7, 207, id(mdi_big), "󰖐");}
+      if(id(weather_for_cond).state == "lightning") {
+        it.print(7, 207, id(mdi_big), "󰖓");}
+      if(id(weather_for_cond).state == "lightning-rainy") {
+        it.print(7, 207, id(mdi_big), "󰙾");}
+
+      // Horizontal line
+      it.line(100, 70, 100, 299);
+
+      // INDOOR
+      it.line(100, 132, 393, 132);
+      it.printf(107, 85, id(header_font), TextAlign::BASELINE_LEFT, "INDOOR");
+
+      if(indoor_temp > -100 && indoor_temp < 100){
+        it.printf(258, 125, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , "%2.1fºc",indoor_temp);
+      }else{
+        it.print(258, 125, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , " - ºc");
+      }
+      it.print(115, 123,  id(mdi_med), TextAlign::BASELINE_CENTER, "󰔏"); //thermometer
+
+      if(indoor_humid > 0 && indoor_humid < 150){
+        if(indoor_humid < 100){
+          it.printf(383, 125, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , "%3d%%", indoor_humid);
+        }else{
+          it.printf(395, 125, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , "%3d%%", indoor_humid);
+        }
+      }else{
+        it.print(382, 125, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , " -  %");
+      }
+      it.print(285, 125, id(mdi_med), TextAlign::BASELINE_CENTER, "󰖎"); //water-percent
+
+      it.printf(107, 147, id(header_font), TextAlign::BASELINE_LEFT, "PRESSURE");
+
+      if(outdoor_press > 0 && outdoor_press < 2000){
+        it.printf(345, 182, id(mid_sensor_font), TextAlign::BASELINE_RIGHT , "%2.0f hPA", outdoor_press);
+      }else{
+        it.print(327, 182, id(mid_sensor_font), TextAlign::BASELINE_RIGHT , "-  hPA");
+      }
+      it.print(165, 180, id(mdi_med), TextAlign::BASELINE_CENTER, "󰊚"); //gauge
+
+      it.printf(107, 197, id(header_font), TextAlign::BASELINE_LEFT, "WIND DIRECTION");
+
+      if(bearing_wind == 0 || bearing_wind == 360) {
+        it.print(210, 232, id(mid_sensor_font), TextAlign::BASELINE_LEFT, "N"); }
+      if(bearing_wind > 0 && bearing_wind < 90) {
+        it.print(197, 232, id(mid_sensor_font), TextAlign::BASELINE_LEFT, "NE"); }
+      if(bearing_wind == 90) {
+        it.print(210, 232, id(mid_sensor_font), TextAlign::BASELINE_LEFT, "E"); }
+      if(bearing_wind > 90 && bearing_wind < 180) {
+        it.print(197, 232, id(mid_sensor_font), TextAlign::BASELINE_LEFT, "SE"); }
+      if(bearing_wind == 180) {
+        it.print(210, 232, id(mid_sensor_font), TextAlign::BASELINE_LEFT, "S"); }
+      if(bearing_wind > 180 && bearing_wind < 270) {
+        it.print(190, 232, id(mid_sensor_font), TextAlign::BASELINE_LEFT, "SW"); }
+      if(bearing_wind == 270) {
+        it.print(210, 232, id(mid_sensor_font), TextAlign::BASELINE_LEFT, "W"); }
+      if(bearing_wind > 270 && bearing_wind < 360) {
+        it.print(190, 232, id(mid_sensor_font), TextAlign::BASELINE_LEFT, "NW"); }
+
+      it.print(165, 232, id(mdi_med), TextAlign::BASELINE_CENTER, "󰖝"); //wind
+      if(speed_wind < 50 && speed_wind > -1){    //Has valid value
+        if(speed_wind > 9) {
+          it.printf(290, 232, id(mid_sensor_font), TextAlign::BASELINE_RIGHT , "%2.0f", speed_wind+20);
+          it.print(295, 232, id(mid_sensor_font),TextAlign::BASELINE_LEFT, "m/s");
+        }else{
+          it.printf(270, 232, id(mid_sensor_font), TextAlign::BASELINE_RIGHT , "%1.0f", speed_wind);
+          it.print(275, 232, id(mid_sensor_font),TextAlign::BASELINE_LEFT, "m/s");
+        }
+        if(speed_wind > wind_danger_thres){
+          it.print(125, 232, id(mdi_med), TextAlign::BASELINE_CENTER, "󰀦"); //warning
+        }
+      }
+      else{                             //Invalid or error value
+        it.print(255, 232, id(mid_sensor_font), TextAlign::BASELINE_RIGHT , "- ");
+        it.print(263, 232, id(mid_sensor_font),TextAlign::BASELINE_LEFT, "m/s");
+      }
+
+      // OUTDOOR
+      it.line(100, 242, 393, 242);
+      it.printf(107, 257, id(header_font), TextAlign::BASELINE_LEFT, "OUTDOOR");
+
+      if(outdoor_temp > -100 && outdoor_temp < 100){
+        it.printf(258, 297, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , "%2.1fºc",outdoor_temp);
+      }else{
+        it.print(258, 297, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , " - ºc");
+      }
+      it.print(115, 293, id(mdi_med), TextAlign::BASELINE_CENTER, "󰔏"); //thermometer
+
+      if(outdoor_humid > 0 && outdoor_humid < 150){
+        if(outdoor_humid < 100){
+          it.printf(383, 297, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , "%3d%%", outdoor_humid);
+        }else{
+          it.printf(395, 297, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , "%3d%%", outdoor_humid);
+        }
+      }else{
+        it.print(382, 297, id(sub_sensor_font), TextAlign::BASELINE_RIGHT , " -  %");
+      }
+      it.print(285, 297, id(mdi_med), TextAlign::BASELINE_CENTER, "󰖎"); //water-percent
+      
+      /* FOOTERT */
+      //it.strftime(235, 298 , id(header_font), TextAlign::BASELINE_LEFT , "Updated at %Y. %b. %d. %H:%M", id(current_time).now());
+      
+      /* WiFi Signal Strenght */
+      if(id(wifisignal).has_state()) {
+        int x = 388;
+        int y = 18;
+        if (id(wifisignal).state >= -50) {
+            //Excellent
+            it.print(x, y, id(mdi_wifi), TextAlign::BASELINE_CENTER, "󰤨");
+            ESP_LOGI("WiFi", "Exellent");
+        } else if (id(wifisignal).state  >= -60) {
+            //Good
+            it.print(x, y, id(mdi_wifi), TextAlign::BASELINE_CENTER, "󰤥");
+            ESP_LOGI("WiFi", "Good");
+        } else if (id(wifisignal).state  >= -75) {
+            //Fair
+            it.print(x, y, id(mdi_wifi), TextAlign::BASELINE_CENTER, "󰤢");
+            ESP_LOGI("WiFi", "Fair");
+        } else if (id(wifisignal).state  >= -100) {
+            //Weak
+            it.print(x, y, id(mdi_wifi), TextAlign::BASELINE_CENTER, "󰤟");
+            ESP_LOGI("WiFi", "Weak");
+        } else {
+            //Unlikely working signal
+            it.print(x, y, id(mdi_wifi), TextAlign::BASELINE_CENTER, "󰤫");
+            ESP_LOGI("WiFi", "Unlikely");
+        }
+      }
