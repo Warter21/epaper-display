@@ -237,11 +237,11 @@ display:
       it.printf(310, 12, id(header_font), TextAlign::BASELINE_LEFT, "MOON");
       if(id(moon).state == "first_quarter") {
         it.print(328, 14, id(mdi_moon), "󰽡");}
-      if(id(moon).state == "full") {
+      if(id(moon).state == "full_moon") {
         it.print(328, 14, id(mdi_moon), "󰽢");}
       if(id(moon).state == "last_quarter") {
         it.print(328, 14, id(mdi_moon), "󰽣");}
-      if(id(moon).state == "new") {
+      if(id(moon).state == "new_moon") {
         it.print(328, 14, id(mdi_moon), "󰽤");}
       if(id(moon).state == "waning_crescent") {
         it.print(328, 14, id(mdi_moon), "󰽥");}
