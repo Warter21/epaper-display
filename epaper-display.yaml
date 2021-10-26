@@ -227,8 +227,8 @@ display:
       // TIME
       it.printf(8, 12, id(header_font), TextAlign::BASELINE_LEFT, "TIME");
       it.strftime(10, 61, id(main_sensor_font), TextAlign::BASELINE_LEFT, "%H:%M", id(current_time).now());
-      it.strftime(233, 35, id(date_sensor_unit), TextAlign::BASELINE_CENTER, "%A", id(current_time).now());
-      it.strftime(235, 55, id(date_sensor_unit), TextAlign::BASELINE_CENTER, "%Y. %b. %d.", id(current_time).now());
+      it.strftime(234, 35, id(date_sensor_unit), TextAlign::BASELINE_CENTER, "%A", id(current_time).now());
+      it.strftime(237, 55, id(date_sensor_unit), TextAlign::BASELINE_CENTER, "%Y. %b. %d.", id(current_time).now());
 
       // Horizontal line
       it.line(310, 2, 310, 70);
