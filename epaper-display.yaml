@@ -57,7 +57,7 @@ font:
 
   - file: 'fonts/Roboto-Bold.ttf'
     id: date_sensor_unit
-    size: 17
+    size: 19
        
   - file: 'fonts/Roboto-Medium.ttf'
     id: sub_sensor_font
@@ -227,28 +227,28 @@ display:
       // TIME
       it.printf(8, 12, id(header_font), TextAlign::BASELINE_LEFT, "TIME");
       it.strftime(10, 61, id(main_sensor_font), TextAlign::BASELINE_LEFT, "%H:%M", id(current_time).now());
-      it.strftime(231, 35, id(date_sensor_unit), TextAlign::BASELINE_CENTER, "%A", id(current_time).now());
-      it.strftime(233, 55, id(date_sensor_unit), TextAlign::BASELINE_CENTER, "%Y. %b. %d.", id(current_time).now());
+      it.strftime(233, 35, id(date_sensor_unit), TextAlign::BASELINE_CENTER, "%A", id(current_time).now());
+      it.strftime(235, 55, id(date_sensor_unit), TextAlign::BASELINE_CENTER, "%Y. %b. %d.", id(current_time).now());
 
       // Horizontal line
-      it.line(305, 2, 305, 70);
+      it.line(310, 2, 310, 70);
 
       // Moon
-      it.printf(310, 12, id(header_font), TextAlign::BASELINE_LEFT, "MOON");
+      it.printf(315, 12, id(header_font), TextAlign::BASELINE_LEFT, "MOON");
       if(id(moon).state == "first_quarter") {
-        it.print(328, 14, id(mdi_moon), "󰽡");}
+        it.print(333, 14, id(mdi_moon), "󰽡");}
       if(id(moon).state == "full_moon") {
-        it.print(328, 14, id(mdi_moon), "󰽢");}
+        it.print(333, 14, id(mdi_moon), "󰽢");}
       if(id(moon).state == "last_quarter") {
-        it.print(328, 14, id(mdi_moon), "󰽣");}
+        it.print(333, 14, id(mdi_moon), "󰽣");}
       if(id(moon).state == "new_moon") {
-        it.print(328, 14, id(mdi_moon), "󰽤");}
+        it.print(333, 14, id(mdi_moon), "󰽤");}
       if(id(moon).state == "waning_crescent") {
-        it.print(328, 14, id(mdi_moon), "󰽥");}
+        it.print(333, 14, id(mdi_moon), "󰽥");}
       if(id(moon).state == "waning_gibbous") {
-        it.print(328, 14, id(mdi_moon), "󰽦");}
+        it.print(333, 14, id(mdi_moon), "󰽦");}
       if(id(moon).state == "waxing_crescent") {
-        it.print(328, 14, id(mdi_moon), "󰽧");}
+        it.print(333, 14, id(mdi_moon), "󰽧");}
       if(id(moon).state == "waxing_gibbous") {
         it.print(328, 14, id(mdi_moon), "󰽨");}
 
