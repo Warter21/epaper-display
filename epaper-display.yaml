@@ -183,9 +183,10 @@ sensor:
     id: wifisignal
     update_interval: 60s
 
-  - platform: uptime
-    name: Epaper Uptime
-
+switch:
+  - platform: restart
+    name: "Epaper-Display Restart"
+    
 text_sensor:
   - platform: homeassistant
     entity_id: sensor.openweathermap_condition
@@ -236,19 +237,19 @@ display:
       // Moon
       it.printf(315, 12, id(header_font), TextAlign::BASELINE_LEFT, "MOON");
       if(id(moon).state == "first_quarter") {
-        it.print(333, 14, id(mdi_moon), "󰽡");}
+        it.print(328, 14, id(mdi_moon), "󰽡");}
       if(id(moon).state == "full_moon") {
-        it.print(333, 14, id(mdi_moon), "󰽢");}
+        it.print(328, 14, id(mdi_moon), "󰽢");}
       if(id(moon).state == "last_quarter") {
-        it.print(333, 14, id(mdi_moon), "󰽣");}
+        it.print(328, 14, id(mdi_moon), "󰽣");}
       if(id(moon).state == "new_moon") {
-        it.print(333, 14, id(mdi_moon), "󰽤");}
+        it.print(328, 14, id(mdi_moon), "󰽤");}
       if(id(moon).state == "waning_crescent") {
-        it.print(333, 14, id(mdi_moon), "󰽥");}
+        it.print(328, 14, id(mdi_moon), "󰽥");}
       if(id(moon).state == "waning_gibbous") {
-        it.print(333, 14, id(mdi_moon), "󰽦");}
+        it.print(328, 14, id(mdi_moon), "󰽦");}
       if(id(moon).state == "waxing_crescent") {
-        it.print(333, 14, id(mdi_moon), "󰽧");}
+        it.print(328, 14, id(mdi_moon), "󰽧");}
       if(id(moon).state == "waxing_gibbous") {
         it.print(328, 14, id(mdi_moon), "󰽨");}
 
