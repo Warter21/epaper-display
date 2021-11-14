@@ -179,7 +179,7 @@ sensor:
     id: press_outdoor
 
   - platform: wifi_signal
-    name: "Epaper Display WiFi Signal"
+    name: "Epaper-Display WiFi Signal"
     id: wifisignal
     update_interval: 60s
 
