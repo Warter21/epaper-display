@@ -376,7 +376,7 @@ display:
       it.print(165, 232, id(mdi_med), TextAlign::BASELINE_CENTER, "󰖝"); //wind
       if(speed_wind < 50 && speed_wind > -1){    //Has valid value
         if(speed_wind > 9) {
-          it.printf(290, 232, id(mid_sensor_font), TextAlign::BASELINE_RIGHT , "%2.0f", speed_wind+20);
+          it.printf(290, 232, id(mid_sensor_font), TextAlign::BASELINE_RIGHT , "%2.0f", speed_wind);
           it.print(295, 232, id(mid_sensor_font),TextAlign::BASELINE_LEFT, "m/s");
         }else{
           it.printf(270, 232, id(mid_sensor_font), TextAlign::BASELINE_RIGHT , "%1.0f", speed_wind);
